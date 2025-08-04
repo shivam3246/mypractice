@@ -64,6 +64,32 @@ public class ReorderDataInLogFiles {
         });
         return logs;
     }
+    //Bucket + Merge Stable partition
+        public static String[] iLikedThis(String[] logs) {
+        List<String> letterLogs = new ArrayList<>();
+        List<String> digitLogs = new ArrayList<>();
+        for (String log : logs) {
+            int idx = log.indexOf(' ');
+            if (Character.isDigit(log.charAt(idx + 1))) {
+                digitLogs.add(log);
+            } else {
+                letterLogs.add(log);
+            }
+        }
+        letterLogs.sort((a, b) -> {
+            String idA = a.substring(0, a.indexOf(' '));
+            String logA = a.substring(a.indexOf(' ') + 1);
+            String idB = b.substring(0, b.indexOf(' '));
+            String logB = b.substring(b.indexOf(' ') + 1);
+            int cmp = logA.compareTo(logB);
+            if (cmp != 0) return cmp;
+            return idA.compareTo(idB);
+        });
+        letterLogs.addAll(digitLogs);
+        return letterLogs.toArray(new String[0]);
+    }
+
+
 
     public static void main(String[] args) {
         String[] logs = {
@@ -76,8 +102,10 @@ public class ReorderDataInLogFiles {
 
         // String[] result = reorderLogFiles(logs);
         // System.out.println(Arrays.toString(result));
-        String []anwer = anotherMethod(logs);
-        System.out.println(anwer);
+        // String []anwer = anotherMethod(logs);
+        // System.out.println(anwer);
+        String []answer2 = iLikedThis(logs);
+        System.out.println(answer2);
 
         }
 }
