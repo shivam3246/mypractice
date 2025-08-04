@@ -46,6 +46,25 @@ public class ReorderDataInLogFiles {
         return result;
     }
 
+    public static String[] anotherMethod(String[] logs) {
+        Arrays.sort(logs, (log1, log2) -> {
+            String[] split1 = log1.split(" ", 2);
+            String[] split2 = log2.split(" ", 2);
+            boolean isDigit1 = Character.isDigit(split1[1].charAt(0));
+            boolean isDigit2 = Character.isDigit(split2[1].charAt(0));
+            if (!isDigit1 && !isDigit2) { // both letter-logs
+                int cmp = split1[1].compareTo(split2[1]);
+                if (cmp != 0) return cmp; 
+                return split1[0].compareTo(split2[0]);
+            }
+            if (!isDigit1 && isDigit2) return -1; // letter-log before digit-log
+            if (isDigit1 && !isDigit2) return 1;  // digit-log after letter-log
+            return 0; //both digits-letter logs are in order
+
+        });
+        return logs;
+    }
+
     public static void main(String[] args) {
         String[] logs = {
             "dig1 8 1 5 1",
@@ -55,7 +74,10 @@ public class ReorderDataInLogFiles {
             "let3 art zero"
         };
 
-        String[] result = reorderLogFiles(logs);
-        System.out.println(Arrays.toString(result));
-    }
+        // String[] result = reorderLogFiles(logs);
+        // System.out.println(Arrays.toString(result));
+        String []anwer = anotherMethod(logs);
+        System.out.println(anwer);
+
+        }
 }
